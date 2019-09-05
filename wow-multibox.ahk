@@ -11,7 +11,7 @@ altWindow := 0
 altCommand := false
 ; SetCursorPosProc := DllCall("GetProcAddress", "Ptr", DllCall("LoadLibrary", "Str", "kernel32", "Ptr"), "AStr", "SetCursorPos", "Ptr")
 
-Command(key, mouse)
+Command(key, mouse, alt)
 {
   global
   if (WinActive("World of Warcraft") && %altCommand% = true)
@@ -21,17 +21,38 @@ Command(key, mouse)
       MouseGetPos, mouseX, mouseY
       SetControlDelay -1
       DllCall("SetCursorPos", Int, mouseX - 1920, Int, mouseY)
-      Sleep 50
-      ControlSend,, %key%, ahk_id %altWindow%
+      Sleep 10
+      ControlClick, X%mouseX% Y%mouseY%, ahk_id %altWindow% , , , , NA Pos
+      if (alt = true)
+      {
+        ControlSend,, {ALT down}%key%{ALT up}, ahk_id %altWindow%
+      }
+      if (alt = false)
+      {
+        ControlSend,, %key%, ahk_id %altWindow%
+      }
       %altCommand% := false
       DllCall("SetCursorPos", Int, mouseX, Int, mouseY)
       return
     }
-    ControlSend,, %key%, ahk_id %altWindow%
+    if (alt = true)
+    {
+      ControlSend,, {ALT down}%key%{ALT up}, ahk_id %altWindow%
+    }
+    if (alt = false)
+    {
+      ControlSend,, %key%, ahk_id %altWindow%
+    }
     %altCommand% := false
     return
   }
-  SendInput %key%
+  if (alt = true)
+  {
+    SendInput {ALT down}%key%{ALT up}
+  }
+  if (alt = false) {
+    SendInput %key%
+  }
   %altCommand% := false
   return
 }
@@ -87,89 +108,137 @@ IfWinActive, World of Warcraft
 ; 1st row
 
 $F1::
-Command("{F1}", true)
+Command("{F1}", true, false)
 return
 
 $F2::
-Command("{F2}", true)
+Command("{F2}", true, false)
 return
 
 $F3::
-Command("{F3}", true)
+Command("{F3}", true, false)
 return
 
 $F4::
-Command("{F4}", true)
+Command("{F4}", true, false)
 return
 
 $F5::
-Command("{F5}", true)
+Command("{F5}", true, false)
+return
+
+$!F1::
+Command("{F1}", true, true)
+return
+
+$!F2::
+Command("{F2}", true, true)
+return
+
+$!F3::
+Command("{F3}", true, true)
 return
 
 ; 2nd row
 
 $1::
-Command(1, true)
+Command(1, true, false)
 return
 
 $2::
-Command(2, true)
+Command(2, true, false)
 return
 
 $3::
-Command(3, true)
+Command(3, true, false)
 return
 
 $4::
-Command(4, true)
+Command(4, true, false)
 return
 
 $5::
-Command(5, true)
+Command(5, true, false)
+return
+
+$!1::
+Command(1, true, true)
+return
+
+$!2::
+Command(2, true, true)
+return
+
+$!3::
+Command(3, true, true)
 return
 
 ; 3rd row
 
 $q::
-Command("q", false)
+Command("q", false, false)
 return
 
 $w::
-Command("w", false)
+Command("w", false, false)
 return
 
 $e::
-Command("e", false)
+Command("e", false, false)
 return
 
 $r::
-Command("r", false)
+Command("r", false, false)
 return
 
 $t::
-Command("t", false)
+Command("t", false, false)
+return
+
+$!q::
+Command("q", true, true)
+return
+
+$!w::
+Command("w", true, true)
+return
+
+$!e::
+Command("e", true, true)
 return
 
 ; 4th row
 
 $a::
-Command("a", false)
+Command("a", false, false)
 return
 
 $s::
-Command("s", false)
+Command("s", false, false)
 return
 
 $d::
-Command("d", false)
+Command("d", false, false)
 return
 
 $f::
-Command("f", false)
+Command("f", false, false)
 return
 
 $g::
-Command("g", false)
+Command("g", false, false)
+return
+
+$!a::
+Command("a", false, true)
+return
+
+$!s::
+Command("s", false, true)
+return
+
+$!d::
+Command("d", false, true)
 return
 
 ^!r::Reload
