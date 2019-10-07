@@ -21,7 +21,7 @@ Command(key, mouse, alt)
       MouseGetPos, mouseX, mouseY
       SetControlDelay -1
       DllCall("SetCursorPos", Int, mouseX - 1920, Int, mouseY)
-      Sleep 10
+      Sleep 50
       ControlClick, X%mouseX% Y%mouseY%, ahk_id %altWindow% , , , , NA Pos
       if (alt = true)
       {
@@ -81,10 +81,11 @@ IfWinActive, World of Warcraft
   Return
 }
 
-^!l::
+$^!l::
 KeyWait l
 IfWinActive, World of Warcraft
 {
+  SendInput {Control down}{Alt down}l{Control up}{Alt up}
   ControlSend,, {Control down}{Alt down}l{Control up}{Alt up}, ahk_id %altWindow%
   Return
 }
@@ -120,7 +121,7 @@ Command("{F3}", true, false)
 return
 
 $F4::
-Command("{F4}", true, false)
+Command("{F4}", false, false)
 return
 
 $F5::
